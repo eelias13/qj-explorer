@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Playground</title>
-    <script src="wasm_loder.js"></script>
+
+    <script src="wasm_loader.js"></script>
     <script src="script.js"></script>
     <script src="monaco/vs/loader.js"></script>
     <link rel="stylesheet" href="monaco/vs/editor/editor.main.css">
@@ -22,6 +23,9 @@
                 document.getElementById("input").focus();
             });
 
+
+            let commands;
+
             // setup editor
             window.require.config({ paths: { 'vs': 'monaco/vs' } });
             window.MonacoEnvironment = { getWorkerUrl: () => 'monaco/vs/base/worker/workerMain.js' };
@@ -37,53 +41,53 @@
                 });
 
                 // setup_cmd
-                const commands = setup_cmd(editor, document.getElementById("output"));
+                commands = setup_cmd(editor, document.getElementById("output"));
+            });
 
-                const inputEl = document.getElementById("input");
-                const outputEl = document.getElementById("output");
-                const history = [];
-                let historyIndex = -1;
+            const inputEl = document.getElementById("input");
+            const outputEl = document.getElementById("output");
+            const history = [];
+            let historyIndex = -1;
 
-                inputEl.addEventListener("keydown", (e) => {
-                    if (e.key === "Enter") {
-                        const input = e.target.value.trim();
-                        if (input === "") return;
+            inputEl.addEventListener("keydown", (e) => {
+                if (e.key === "Enter") {
+                    const input = e.target.value.trim();
+                    if (input === "") return;
 
-                        history.push(input);
-                        historyIndex = history.length;
+                    history.push(input);
+                    historyIndex = history.length;
 
-                        outputEl.innerText += `> ${input}\n`;
-                        e.target.value = "";
+                    outputEl.innerText += `> ${input}\n`;
+                    e.target.value = "";
 
-                        let args = input.split(" ");
-                        const cmd = args.shift()
-                        const func = commands[cmd];
+                    let args = input.split(" ");
+                    const cmd = args.shift()
+                    const func = commands[cmd];
 
-                        if (func) {
-                            const result = func(args);
-                            if (result) outputEl.innerText += `${result}\n`;
-                        } else {
-                            outputEl.innerText += `Command not found: ${cmd}\n`;
-                        }
-
-                        outputEl.scrollTop = outputEl.scrollHeight;
-                    } else if (e.key === "ArrowUp") {
-                        if (historyIndex > 0) {
-                            historyIndex--;
-                            inputEl.value = history[historyIndex];
-                        }
-                        e.preventDefault();
-                    } else if (e.key === "ArrowDown") {
-                        if (historyIndex < history.length - 1) {
-                            historyIndex++;
-                            inputEl.value = history[historyIndex];
-                        } else {
-                            historyIndex = history.length;
-                            inputEl.value = "";
-                        }
-                        e.preventDefault();
+                    if (func) {
+                        const result = func(args);
+                        if (result) outputEl.innerHTML += `${result}\n`;
+                    } else {
+                        outputEl.innerText += `Command not found: ${cmd}\n`;
                     }
-                });
+                    outputEl.scrollTop = outputEl.scrollHeight;
+
+                } else if (e.key === "ArrowUp") {
+                    if (historyIndex > 0) {
+                        historyIndex--;
+                        inputEl.value = history[historyIndex];
+                    }
+                    e.preventDefault();
+                } else if (e.key === "ArrowDown") {
+                    if (historyIndex < history.length - 1) {
+                        historyIndex++;
+                        inputEl.value = history[historyIndex];
+                    } else {
+                        historyIndex = history.length;
+                        inputEl.value = "";
+                    }
+                    e.preventDefault();
+                }
             });
         }
     </script>
