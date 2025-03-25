@@ -1,6 +1,6 @@
-mkdir -p monaco/vs
 mkdir -p monaco/vs/editor
 mkdir -p monaco/vs/base/browser/ui/codicons/codicon
+mkdir -p monaco/vs/base/worker
 
 wget https://raw.githubusercontent.com/eelias13/qj-explorer/refs/heads/main/monaco/vs/loader.js -O monaco/vs/loader.js
 wget https://raw.githubusercontent.com/eelias13/qj-explorer/refs/heads/main/monaco/vs/editor/editor.main.js -O monaco/vs/editor/editor.main.js
