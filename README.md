@@ -2,6 +2,8 @@
 
 This repository is a browser-based editor version of the [qt](https://github.com/jqlang/jq) CLI application, utilizing [jq-web](https://github.com/fiatjaf/jq-web) (version 0.6.1).
 
+The editor I use is the [monaco-editor](https://github.com/microsoft/monaco-editor) (version 0.52.2) developed by [Microsoft](https://www.microsoft.com/)  an is also used in [vscode](https://code.visualstudio.com/)
+
 ## Running It
 
 This application is built as a website. Open your static web server. For example, you can use the Python server:
